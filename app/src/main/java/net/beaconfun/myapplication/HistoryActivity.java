@@ -1,9 +1,11 @@
 package net.beaconfun.myapplication;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -16,6 +18,15 @@ public class HistoryActivity extends AppCompatActivity {
     public void onTapped(View view) {
         Intent intent = new Intent(this, SupSnapActivity.class);
         startActivity(intent);
+    }
+
+    public void  onTapped2(View view){
+        ImageView iv = new ImageView(this);
+        iv.setImageResource(R.drawable.qrcode);
+        iv.setAdjustViewBounds(true);
+        new AlertDialog.Builder(this)
+                .setView(iv)
+                .show();
     }
 
 }
