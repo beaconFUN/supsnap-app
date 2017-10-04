@@ -27,11 +27,10 @@
         android:layout_height="75dp"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
+        android:background="@drawable/camera"
         android:onClick="onTapped"
-        android:src="@drawable/camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:srcCompat="@android:drawable/presence_video_online"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1" />
 
