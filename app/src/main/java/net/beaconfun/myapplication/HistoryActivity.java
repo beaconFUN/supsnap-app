@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.app.DialogFragment;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -29,4 +30,8 @@ public class HistoryActivity extends AppCompatActivity {
                 .show();
     }
 
+    public void dialog(View view){
+        DialogFragment dialog = new dialog();
+        dialog.show(getFragmentManager(), "dialog_basic");
+    }
 }
