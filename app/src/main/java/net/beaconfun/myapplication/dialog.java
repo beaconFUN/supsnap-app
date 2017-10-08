@@ -5,6 +5,9 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.widget.ImageView;
+
+import org.apache.http.conn.ConnectTimeoutException;
 
 /**
  * Created by masanobuozaki on 2017/10/03.
@@ -25,7 +28,12 @@ public class dialog extends DialogFragment {
                        .setNeutralButton("QRコード", new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialog, int which) {
-                               // Later button pressed
+                               ImageView iv = new ImageView(getActivity());
+                               iv.setImageResource(R.drawable.qrcode);
+                               iv.setAdjustViewBounds(true);
+                               new android.support.v7.app.AlertDialog.Builder(getActivity())
+                                       .setView(iv)
+                                       .show();
                            }
                        })
                        .setNegativeButton("戻る", null)
