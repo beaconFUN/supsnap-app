@@ -34,18 +34,7 @@
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1" />
 
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="88dp"
-        android:layout_height="70dp"
-        android:onClick="onTapped2"
-        android:text="QRコード"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="21dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="16dp" />
+
 
     <Button
         android:id="@+id/dialog"

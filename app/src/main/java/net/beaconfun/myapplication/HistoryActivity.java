@@ -59,15 +59,6 @@ public class HistoryActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void  onTapped2(View view){
-        ImageView iv = new ImageView(this);
-        iv.setImageResource(R.drawable.qrcode);
-        iv.setAdjustViewBounds(true);
-        new AlertDialog.Builder(this)
-                .setView(iv)
-                .show();
-    }
-
     public void dialog(View view){
         DialogFragment dialog = new dialog();
         dialog.show(getFragmentManager(), "dialog_basic");
