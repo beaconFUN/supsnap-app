@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.app.DialogFragment;
+import android.widget.ListView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -35,6 +36,13 @@ public class HistoryActivity extends AppCompatActivity {
         myRealm = Realm.getDefaultInstance();
 
         createMockData();
+
+        RealmResults<History> histories = myRealm.where(History.class).findAll();
+        adapter = new HistoryAdapter(histories);
+        ListView listView = (ListView) findViewById(R.id.HistoryList);
+        listView.setAdapter(adapter);
+    }
+
     private void createMockData() {
         myRealm.executeTransaction(new Realm.Transaction() {
             @Override
