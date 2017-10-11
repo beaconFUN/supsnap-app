@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 
 import org.apache.http.conn.ConnectTimeoutException;
@@ -22,6 +23,7 @@ public class dialog extends DialogFragment {
                        .setPositiveButton("画像", new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialog, int which) {
+                               Log.d("aaa", "onClick: ");
                                // YES button pressed
                            }
                        })

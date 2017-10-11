@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        app:srcCompat="@drawable/dialog_image" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:id="@+id/qr_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageButton
+                android:id="@+id/button11"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:background="#4169E1"
+                android:scaleType="fitStart"
+                android:src="@drawable/qr" />
+
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:background="#4169E1"
+                android:gravity="center"
+                android:text="QRコード"
+                android:textAlignment="viewStart"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/download_button_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <ImageButton
+                android:id="@+id/button12"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:background="#4169E1"
+                android:scaleType="fitStart"
+                android:src="@drawable/download2" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:background="#4169E1"
+                android:gravity="center"
+                android:text="ダウンロード"
+                android:textAlignment="viewStart"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+</LinearLayout>
