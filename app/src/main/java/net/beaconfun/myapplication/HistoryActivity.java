@@ -25,6 +25,8 @@ public class HistoryActivity extends AppCompatActivity {
     private static final String TAG = "HistoryActivity";
     private Realm myRealm;
     private HistoryAdapter adapter;
+    private AsyncNetwork task = new AsyncNetwork();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         myRealm = Realm.getDefaultInstance();
+
 
         createMockData();
 
@@ -45,7 +48,7 @@ public class HistoryActivity extends AppCompatActivity {
         myRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                History history = realm.createObject(History.class, 1);
+                History history = realm.createObject(History.class,1);
                 history.setLocation("未来大");
                 history.setCreatedAt(new Date());
 
