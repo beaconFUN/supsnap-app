@@ -140,25 +140,6 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
 
     @Override
     public void onBeaconServiceConnect() {
-        /*
-        mBeaconManager.addRangeNotifier(new RangeNotifier() {
-            @Override
-            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-                Log.i(TAG, "The first beacon I see is about "+beacons.toString()+" meters away.");
-                if (beacons.size() > 0) {
-
-                    Log.i(TAG, "The first beacon I see is about "+beacons.iterator().next().getDistance()+" meters away.");
-                }
-            }
-        });
-
-        try {
-            mBeaconManager.startRangingBeaconsInRegion(new Region("ACDD0D58-E9E2-4899-B183-86B765C61009", null, null, null));
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        *
-        */
         mBeaconManager.addMonitorNotifier(new MonitorNotifier() {
             @Override
             public void didEnterRegion(Region region) {
