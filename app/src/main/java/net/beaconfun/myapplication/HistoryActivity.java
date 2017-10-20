@@ -164,6 +164,8 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
         try {
             region = new Region(BEACON_UUID, null, null, null);
             mBeaconManager.startMonitoringBeaconsInRegion(region);
-        } catch (RemoteException e) {    }
+        } catch (RemoteException e) {
+            Log.e(TAG, e.toString());
+        }
     }
 }
