@@ -5,4 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="net.beaconfun.myapplication.SupSnapActivity">
+
+    <FrameLayout
+        android:layout_width="576dp"
+        android:layout_height="295dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <VideoView
+            android:id="@+id/videoView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/countView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="TextView"
+            android:textColor="@android:color/white"
+            android:textSize="50sp" />
+
+    </FrameLayout>
+
 </android.support.constraint.ConstraintLayout>

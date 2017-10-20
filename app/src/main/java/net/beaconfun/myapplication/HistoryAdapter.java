@@ -1,5 +1,7 @@
 package net.beaconfun.myapplication;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import io.realm.RealmBaseAdapter;
  */
 
 class HistoryAdapter extends RealmBaseAdapter<History> implements ListAdapter{
+    AsyncNetwork task = new AsyncNetwork();
 
     private static class ViewHolder {
         ImageView thumImage;
@@ -40,7 +43,13 @@ class HistoryAdapter extends RealmBaseAdapter<History> implements ListAdapter{
             viewHolder = (ViewHolder) convertView.getTag();
         }
         History history = adapterData.get(position);
-        viewHolder.thumImage.setImageResource(R.drawable.p350x150); // FIXME: 2017/10/09 実際にDBに保存されているデータに変更する
+        byte[] b = history.getThumbnail();
+        if (b != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(b , 0, b .length);
+            viewHolder.thumImage.setImageBitmap(bitmap);
+        } else {
+            viewHolder.thumImage.setImageResource(R.drawable.p350x150);
+        }
         viewHolder.locationName.setText(history.getLocation());
         return convertView;
     }
