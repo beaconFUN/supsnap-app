@@ -59,7 +59,6 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
         ListView listView = (ListView) findViewById(R.id.HistoryList);
         listView.setAdapter(adapter);
 
-
         mBeaconManager = BeaconManager.getInstanceForApplication(this);
         String IBEACON_FORMAT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24";
         mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_FORMAT));
