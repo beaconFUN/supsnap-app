@@ -8,13 +8,6 @@
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp">
 
-    <ListView
-        android:id="@+id/HistoryList"
-        android:layout_width="0dp"
-        android:layout_height="495dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
-
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="80dp"
@@ -38,6 +31,13 @@
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="7dp"
         android:onClick="dialog"/>
+
+    <ListView
+        android:id="@+id/HistoryList"
+        android:layout_width="0dp"
+        android:layout_height="495dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="8dp" />
 
 
 </android.support.constraint.ConstraintLayout>
