@@ -46,7 +46,7 @@ class HistoryAdapter extends RealmBaseAdapter<History> implements ListAdapter{
         byte[] b = history.getThumbnail();
         if (b != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(b , 0, b .length);
-            viewHolder.thumImage.setImageBitmap(bitmap); // FIXME: 2017/10/09 実際にDBに保存されているデータに変更する
+            viewHolder.thumImage.setImageBitmap(bitmap);
         } else {
             viewHolder.thumImage.setImageResource(R.drawable.p350x150);
         }

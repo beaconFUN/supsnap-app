@@ -25,8 +25,6 @@ public class HistoryActivity extends AppCompatActivity {
     private static final String TAG = "HistoryActivity";
     private Realm myRealm;
     private HistoryAdapter adapter;
-    private AsyncNetwork task = new AsyncNetwork();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,20 +3,16 @@ package net.beaconfun.myapplication;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
-
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
-
 import io.realm.Realm;
-import io.realm.RealmResults;
+
 
 /**
  * Created by masanobuozaki on 2017/10/12.
@@ -61,7 +57,7 @@ public class AsyncNetwork extends AsyncTask<String,Integer,byte[]> {
 
         byte[] bytes = bmp;
         if (bytes != null) {
-          Bitmap bit = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            Bitmap bit = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             Log.d("tag", bit.toString());
         }
     }
