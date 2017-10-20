@@ -68,13 +68,13 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
     @Override
     protected void onResume() {
         super.onResume();
-        mBeaconManager.bind(this); // サービスの開始
+        mBeaconManager.bind(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mBeaconManager.unbind(this); // サービスの停止
+        mBeaconManager.unbind(this);
     }
 
     private void createMockData() {
