@@ -27,17 +27,4 @@
         app:layout_constraintLeft_toLeftOf="parent"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1" />
-
-
-
-    <Button
-        android:id="@+id/dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ダイアログ"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="7dp"
-        android:onClick="dialog"/>
-
-
 </android.support.constraint.ConstraintLayout>

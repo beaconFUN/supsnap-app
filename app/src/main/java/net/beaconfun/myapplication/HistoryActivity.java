@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.app.DialogFragment;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -121,11 +120,6 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
 
         Intent intent = new Intent(this, SupSnapActivity.class);
         startActivity(intent);
-    }
-
-    public void dialog(View view){
-        DialogFragment dialog = new dialog();
-        dialog.show(getFragmentManager(), "dialog_basic");
     }
 
     @Override
