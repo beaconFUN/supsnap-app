@@ -36,6 +36,7 @@ import io.realm.RealmResults;
 public class HistoryActivity extends AppCompatActivity implements BeaconConsumer {
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private static final String TAG = "HistoryActivity";
+    private static final String BEACON_UUID = "acdd0d58-e9e2-4899-b183-86b765c61009";
     private Realm myRealm;
     private HistoryAdapter adapter;
     BeaconManager mBeaconManager;
@@ -161,7 +162,7 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
         });
 
         try {
-            region = new Region("acdd0d58-e9e2-4899-b183-86b765c61009", null, null, null);
+            region = new Region(BEACON_UUID, null, null, null);
             mBeaconManager.startMonitoringBeaconsInRegion(region);
         } catch (RemoteException e) {    }
     }
