@@ -33,6 +33,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         myRealm = Realm.getDefaultInstance();
 
+
         createMockData();
 
         RealmResults<History> histories = myRealm.where(History.class).findAll();
@@ -45,7 +46,7 @@ public class HistoryActivity extends AppCompatActivity {
         myRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                History history = realm.createObject(History.class, 1);
+                History history = realm.createObject(History.class,1);
                 history.setLocation("未来大");
                 history.setCreatedAt(new Date());
 
