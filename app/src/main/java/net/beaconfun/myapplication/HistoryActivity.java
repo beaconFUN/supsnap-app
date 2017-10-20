@@ -147,12 +147,12 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
                 Intent intent = new Intent(getApplicationContext(), SupSnapActivity.class);
                 startActivity(intent);
 
-                Log.i(TAG, "I just saw an beacon for the first time!");
+                Log.i(TAG, "ビーコンを検出");
             }
 
             @Override
             public void didExitRegion(Region region) {
-                Log.i(TAG, "I no longer see an beacon");
+                Log.i(TAG, "ビーコンが検出範囲外へ");
             }
 
             @Override
