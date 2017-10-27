@@ -1,5 +1,8 @@
 package net.beaconfun.myapplication;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -14,7 +17,7 @@ import io.realm.Realm;
 
 public class SupSnapActivity extends AppCompatActivity {
 
-    private final int COUNT_TIME = 5;
+    private final int COUNT_TIME = 8;
 
 
     Handler myHandler = new Handler();
@@ -24,17 +27,19 @@ public class SupSnapActivity extends AppCompatActivity {
     AsyncNetwork task = new AsyncNetwork();
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) { // FIXME: 2017/10/20 作成したhistoryのデータを受け取る
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sup_snap);
 
-        String uuid = ""; //// FIXME: 2017/10/20
-        String major = ""; //// FIXME: 2017/10/20
-        String minor = ""; //// FIXME: 2017/10/20
-        Log.d("UUID", uuid);
-        Log.d("major", major);
-        Log.d("minor", minor);
+        Intent intent = getIntent();
+        String uuid = intent.getStringExtra("uuid"); //// FIXME: 2017/10/20
+        String major = intent.getStringExtra("major"); //// FIXME: 2017/10/20
+        String minor = intent.getStringExtra("minor"); //// FIXME: 2017/10/20
+        Log.d("UUID", uuid); // 1
+        Log.d("major", major); // 2
+        Log.d("minor", minor); // 3
 
         /* todo
         {"minor": 2, "uuid": "4F215AA1-3904-47D5-AD5A-3B6AA89542AE", "major": 1, "id": 2}

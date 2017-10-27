@@ -19,15 +19,20 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 
+import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
 import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collection;
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
 
@@ -95,6 +100,9 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
     private void enterBeaconRange(String uuid, String major, String minor) {
         // FIXME: 2017/10/20 作成したHistoryのid, uuid, major, minorを渡す
         Intent intent = new Intent(getApplicationContext(), SupSnapActivity.class);
+        intent.putExtra("uuid", uuid);
+        intent.putExtra("major", major);
+        intent.putExtra("minor", minor);
         startActivity(intent);
     }
 
@@ -169,9 +177,10 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
         mBeaconManager.addMonitorNotifier(new MonitorNotifier() {
             @Override
             public void didEnterRegion(Region region) {
-                enterBeaconRange("", "", ""); // FIXME: 2017/10/20 自明
+                enterBeaconRange("1", "2", "3"); // FIXME: 2017/10/20 自明
                 Log.i(TAG, "ビーコンを検出");
             }
+
 
             @Override
             public void didExitRegion(Region region) {

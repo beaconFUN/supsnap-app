@@ -45,7 +45,7 @@ public class AsyncNetwork extends AsyncTask<String,Integer,byte[]> {
             }
         });
 
-        Bitmap bitmap = BitmapFactory.decodeByteArray(bmp , 0, bmp .length);
+
 
         return null;
     }
