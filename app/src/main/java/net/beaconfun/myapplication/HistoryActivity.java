@@ -83,9 +83,9 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
     private void enterBeaconRange(String uuid, String major, String minor) {
         // FIXME: 2017/10/20 作成したHistoryのid, uuid, major, minorを渡す
         Intent intent = new Intent(getApplicationContext(), SupSnapActivity.class);
-        intent.putExtra("uuid",uuid);
-        intent.putExtra("major",major);
-        intent.putExtra("minor",minor);
+        intent.putExtra("uuid", uuid);
+        intent.putExtra("major", major);
+        intent.putExtra("minor", minor);
         startActivity(intent);
     }
 
