@@ -148,7 +148,8 @@ public class SupSnapActivity extends AppCompatActivity {
                                 public void execute(Realm realm) {
                                     History history = realm.where(History.class).equalTo("id", historyId).findFirst();
                                     Log.d("Visitor", response.toString());
-                                    history.setVisitor(response.toString());
+                                    // history.setVisitor(response.toString());
+                                    history.setVisitor("{\"snap\": 21, \"pass_phrase\": \"86763e164ea5275546f6d5a21f03f03f\", \"user\": \"testuser\", \"date\": \"2017-10-27T08:28:02\", \"place\": 2, \"id\": 26}");
                                 }
                             });
 
