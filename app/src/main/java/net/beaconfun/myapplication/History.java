@@ -13,6 +13,7 @@ public class History extends RealmObject {
     @PrimaryKey
     private long id;
     private Date createdAt;
+    private String visitor;
     private String location;
     private byte[] thumbnail;
 
@@ -46,5 +47,13 @@ public class History extends RealmObject {
 
     public void setThumbnail(byte[] thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public String getVisitor() {
+        return visitor;
+    }
+
+    public void setVisitor(String visitor) {
+        this.visitor = visitor;
     }
 }

@@ -5,6 +5,10 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -20,32 +24,28 @@ import io.realm.Realm;
 
 public class AsyncNetwork extends AsyncTask<String,Integer,byte[]> {
     private ImageView imageView;
+    private long historyId;
     byte[] bmp;
-    private Realm r;
+    private Realm realm;
+    private String visitorJsonString;
+    private JSONObject visitorJson;
+
     @Override
     protected byte[] doInBackground(String... strings) {
         bmp = downloadImage();
-        r = Realm.getDefaultInstance();
+        realm = Realm.getDefaultInstance();
 
+        historyId = 1;// FIXME: 2017/10/27 サムネイルを保存したいHistoryのIDに書き換え　
+        Log.d("historyId", String.valueOf(historyId));
 
-        r.executeTransaction(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                Number maxid = r.where(History.class).max("id");
-                long nextid = 3;
-                if(maxid != null){
-                    nextid = maxid.longValue() + 1;
-                }
-                History history = realm.createObject(History.class,nextid);
-                history.setLocation("aaaaaa");
+                History history = realm.where(History.class).equalTo("id", historyId).findFirst();
                 history.setThumbnail(bmp);
                 history.setCreatedAt(new Date());
-
-
             }
         });
-
-
 
         return null;
     }
@@ -65,12 +65,15 @@ public class AsyncNetwork extends AsyncTask<String,Integer,byte[]> {
     public byte[] downloadImage() {
         byte[] fd = new byte[5000];
         String urlSt = "http://35.200.2.51:5000/get_thum";
-        final String json = "{\"snap\": 7," +
-                "\"pass_phrase\": \"4eb928b5a0955ce9f38615fc980ce627\"," +
-                "\"user\": \"testuser\"," +
-                "\"date\": \"2017-10-25T08:15:15\"," +
-                "\"place\": 2, " +
-                "\"id\": 9}";
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                History history = realm.where(History.class).equalTo("id", historyId).findFirst();
+                visitorJsonString = history.getVisitor();
+            }
+        });
+
         try {
             URL url = new URL(urlSt);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -80,7 +83,7 @@ public class AsyncNetwork extends AsyncTask<String,Integer,byte[]> {
             con.connect();
             OutputStream os = con.getOutputStream();
             PrintStream ps = new PrintStream(os);
-            ps.print(json);
+            ps.print(visitorJsonString);
             ps.close();
             int resp = con.getResponseCode();
             switch (resp) {
