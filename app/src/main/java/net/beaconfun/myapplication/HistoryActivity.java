@@ -1,6 +1,9 @@
 package net.beaconfun.myapplication;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.RemoteException;
@@ -8,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.app.DialogFragment;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -23,6 +28,7 @@ import org.altbeacon.beacon.Region;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Date;
 
 import io.realm.Realm;
@@ -58,6 +64,17 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
         ListView listView = (ListView) findViewById(R.id.HistoryList);
         listView.setAdapter(adapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DialogFragment dialog = new dialog();
+                Bundle args =new Bundle();
+                args.putInt("position",position); // TODO: 2017/10/27 画像データをうけわたす
+                dialog.setArguments(args);
+                dialog.show(getFragmentManager(),"dialog_basic");
+                Log.d("position","ビューは「" + position + "」");
+            }
+        });
+
         mBeaconManager = BeaconManager.getInstanceForApplication(this);
         String IBEACON_FORMAT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24";
         mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_FORMAT));
@@ -85,13 +102,22 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
         myRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                History history = realm.createObject(History.class,1);
+
+                Resources res = getResources();
+                Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.qr);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                byte[] bytes = stream.toByteArray();
+
+                History history = realm.createObject(History.class, 1);
                 history.setLocation("未来大");
                 history.setCreatedAt(new Date());
+                history.setThumbnail(bytes);
 
                 History history2 = realm.createObject(History.class, 2);
                 history2.setLocation("函館山");
                 history2.setCreatedAt(new Date());
+                history2.setThumbnail(bytes);
             }
         });
     }

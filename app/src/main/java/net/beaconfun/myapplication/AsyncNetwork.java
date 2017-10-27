@@ -58,19 +58,19 @@ public class AsyncNetwork extends AsyncTask<String,Integer,byte[]> {
         byte[] bytes = bmp;
         if (bytes != null) {
             Bitmap bit = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            Log.d("tag", bit.toString());
+            // Log.d("tag", bit.toString());
         }
     }
 
     public byte[] downloadImage() {
         byte[] fd = new byte[5000];
         String urlSt = "http://35.200.2.51:5000/get_thum";
-        final String json = "{\"snap\": 10," +
-                "\"pass_phrase\": \"846b45ab2381754ecfc28ac4ebe74fa7\"," +
-                "\"user\": \"sititou70\"," +
-                "\"date\": \"2017-10-07T16:50:42\"," +
+        final String json = "{\"snap\": 7," +
+                "\"pass_phrase\": \"4eb928b5a0955ce9f38615fc980ce627\"," +
+                "\"user\": \"testuser\"," +
+                "\"date\": \"2017-10-25T08:15:15\"," +
                 "\"place\": 2, " +
-                "\"id\": 12}";
+                "\"id\": 9}";
         try {
             URL url = new URL(urlSt);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
