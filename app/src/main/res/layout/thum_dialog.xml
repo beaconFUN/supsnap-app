@@ -6,7 +6,7 @@
     android:weightSum="1">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/modalThum"
         android:layout_width="wrap_content"
         android:layout_height="400dp"
         app:srcCompat="@drawable/dialog_image" />

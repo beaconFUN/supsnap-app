@@ -71,6 +71,7 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
                 args.putInt("position",position);
                 dialog.setArguments(args);
                 dialog.show(getFragmentManager(),"dialog_basic");
+                Log.d("position","ビューは「" + position + "」");
             }
         });
 
