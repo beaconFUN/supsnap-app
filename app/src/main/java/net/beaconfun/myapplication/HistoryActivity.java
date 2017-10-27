@@ -148,11 +148,6 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
         startActivity(intent);
     }
 
-    public void dialog(View view){
-        DialogFragment dialog = new dialog();
-        dialog.show(getFragmentManager(), "dialog_basic");
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
