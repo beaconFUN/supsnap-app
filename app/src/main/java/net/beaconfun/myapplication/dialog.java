@@ -27,7 +27,7 @@ public class dialog extends DialogFragment {
         int positionInt = getArguments().getInt("position");
         Log.d("position" ,"ダイアログが受け取った"+positionInt);
 
-        byte[] b = getArguments().getByteArray("thum");
+        byte[] b = getArguments().getByteArray("thum"); // TODO: 2017/10/27 画像を受けとる
         if (b != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(b , 0, b .length);
             imageView.setImageBitmap(bitmap);

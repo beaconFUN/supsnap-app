@@ -1,21 +1,13 @@
 package net.beaconfun.myapplication;
 
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.util.Date;
-import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
 import android.os.Handler;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import io.realm.Realm;
-import io.realm.RealmResults;
-import io.realm.RealmQuery;
 
 public class SupSnapActivity extends AppCompatActivity {
 

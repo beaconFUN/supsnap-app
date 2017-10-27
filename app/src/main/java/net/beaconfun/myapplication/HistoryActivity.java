@@ -68,7 +68,7 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DialogFragment dialog = new dialog();
                 Bundle args =new Bundle();
-                args.putInt("position",position);
+                args.putInt("position",position); // TODO: 2017/10/27 画像データをうけわたす
                 dialog.setArguments(args);
                 dialog.show(getFragmentManager(),"dialog_basic");
                 Log.d("position","ビューは「" + position + "」");
