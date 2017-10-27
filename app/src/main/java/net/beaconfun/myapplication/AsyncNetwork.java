@@ -58,7 +58,7 @@ public class AsyncNetwork extends AsyncTask<String,Integer,byte[]> {
         byte[] bytes = bmp;
         if (bytes != null) {
             Bitmap bit = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            Log.d("tag", bit.toString());
+            // Log.d("tag", bit.toString());
         }
     }
 
