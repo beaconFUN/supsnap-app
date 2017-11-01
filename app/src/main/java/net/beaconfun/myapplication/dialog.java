@@ -47,7 +47,8 @@ public class dialog extends DialogFragment {
 
         if (thum != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(thum , 0, thum.length);
-            imageView.setImageBitmap(bitmap);
+            Bitmap bitmap2 = Bitmap.createScaledBitmap(bitmap, 1000, 500, false);
+            imageView.setImageBitmap(bitmap2);
         } else {
             imageView.setImageResource(R.drawable.p350x150);
         }

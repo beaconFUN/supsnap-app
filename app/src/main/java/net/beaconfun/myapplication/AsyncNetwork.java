@@ -63,7 +63,7 @@ public class AsyncNetwork extends AsyncTask<String,Integer,byte[]> {
     }
 
     public byte[] downloadImage() {
-        byte[] fd = new byte[5000];
+        byte[] fd = new byte[100000];
         String urlSt = "http://35.200.2.51:5000/get_thum";
 
         /*
