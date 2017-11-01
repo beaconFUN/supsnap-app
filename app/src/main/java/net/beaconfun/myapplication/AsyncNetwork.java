@@ -35,12 +35,16 @@ public class AsyncNetwork extends AsyncTask<String,Integer,byte[]> {
         bmp = downloadImage();
         realm = Realm.getDefaultInstance();
 
-        historyId = 3;// FIXME: 2017/10/27 サムネイルを保存したいHistoryのIDに書き換え　
+        historyId = 1;
         Log.d("historyId", String.valueOf(historyId));
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
+                Number maxid = realm.where(History.class).max("id");
+                if(maxid != null){
+                    historyId = maxid.longValue();
+                }
                 History history = realm.where(History.class).equalTo("id", historyId).findFirst();
                 history.setThumbnail(bmp);
                 history.setCreatedAt(new Date());
