@@ -30,5 +30,6 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     compile 'io.realm:android-adapters:2.1.0'
     compile 'org.altbeacon:android-beacon-library:2+@aar'
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
     testCompile 'junit:junit:4.12'
 }

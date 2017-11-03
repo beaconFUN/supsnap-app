@@ -133,7 +133,7 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
 
         enterBeaconRange("", "", "");
         /*
-        String url = "http://35.200.63.65:5000/models/Visiter";
+        String url = "http://35.200.2.51:5000/models/Visiter";
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(
                 Request.Method.GET,
