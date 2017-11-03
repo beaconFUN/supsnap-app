@@ -36,6 +36,7 @@ public class SupSnapActivity extends AppCompatActivity {
 
     Handler myHandler = new Handler();
     Timer myTimer = new Timer();
+    Timer imageTimer = new Timer();
     Realm realm;
     private HistoryAdapter adapter2;
     AsyncNetwork task = new AsyncNetwork();
@@ -246,11 +247,26 @@ public class SupSnapActivity extends AppCompatActivity {
                 });
             }
         }, 0, 1000);
+
+        Log.d("imageTimer", "start");
+        imageTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ImageUpdater updater = new ImageUpdater((ImageView) findViewById(R.id.streamImage));
+                updater.execute(1);
+            }
+        }, 0, 500);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         myTimer.cancel();
+        imageTimer.cancel();
     }
 }
