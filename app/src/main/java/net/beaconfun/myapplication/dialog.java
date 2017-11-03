@@ -5,11 +5,21 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.realm.Realm;
 
@@ -22,6 +32,7 @@ public class dialog extends DialogFragment {
     Realm realm;
     long historyId = 1;
     byte[] thum = new byte[100000];
+    String visitorJson;
 
 
     @Override
@@ -47,7 +58,7 @@ public class dialog extends DialogFragment {
 
         if (thum != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(thum , 0, thum.length);
-            Bitmap bitmap2 = Bitmap.createScaledBitmap(bitmap, 1000, 500, false);
+            Bitmap bitmap2 = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() * 10, bitmap.getHeight() * 10, false);
             imageView.setImageBitmap(bitmap2);
         } else {
             imageView.setImageResource(R.drawable.p350x150);
@@ -66,4 +77,63 @@ public class dialog extends DialogFragment {
             }
         });
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void getLocation() {
+        String url = "http://35.200.63.65:5000/get_image";
+
+        JSONObject jsonObject = null;
+
+        realm = Realm.getDefaultInstance();
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                History history = realm.where(History.class).equalTo("id", historyId).findFirst();
+                visitorJson = history.getVisitor();
+            }
+        });
+
+        try {
+            jsonObject = new JSONObject(visitorJson);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(final JSONObject response) {
+                        try {
+                            Log.d("TAG", response.toString(2));
+                            realm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    History history = realm.where(History.class).equalTo("id", historyId).findFirst();
+                                    try {
+                                        history.setLocation(response.get("name").toString());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("TAG", error.toString());
+                    }
+                }
+        );
+
+        Mysingleton.getInstance(this.getContext()).addToRequestQueue(jsObjRequest);
+    }
+
 }

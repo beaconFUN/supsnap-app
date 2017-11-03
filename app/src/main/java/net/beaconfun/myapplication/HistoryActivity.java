@@ -98,7 +98,6 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
     }
 
     private void enterBeaconRange(String uuid, String major, String minor) {
-        // FIXME: 2017/10/20 作成したHistoryのid, uuid, major, minorを渡す
         Intent intent = new Intent(getApplicationContext(), SupSnapActivity.class);
         intent.putExtra("uuid", uuid);
         intent.putExtra("major", major);
@@ -134,7 +133,7 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
 
         enterBeaconRange("", "", "");
         /*
-        String url = "http://35.200.2.51:5000/models/Visiter";
+        String url = "http://35.200.63.65:5000/models/Visiter";
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -177,7 +176,7 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
         mBeaconManager.addMonitorNotifier(new MonitorNotifier() {
             @Override
             public void didEnterRegion(Region region) {
-                enterBeaconRange("1", "2", "3"); // FIXME: 2017/10/20 自明
+                enterBeaconRange("1", "2", "3"); // FIXME: 2017/11/01 ビーコンから得た実際のデータを渡す
                 Log.i(TAG, "ビーコンを検出");
             }
 

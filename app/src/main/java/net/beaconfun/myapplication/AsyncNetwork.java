@@ -64,24 +64,25 @@ public class AsyncNetwork extends AsyncTask<String,Integer,byte[]> {
             Bitmap bit = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             // Log.d("tag", bit.toString());
         }
+
     }
 
     public byte[] downloadImage() {
         byte[] fd = new byte[100000];
-        String urlSt = "http://35.200.2.51:5000/get_thum";
-
-        /*
+        String urlSt = "http://35.200.63.65:5000/get_thum";
+        realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
+                Number maxid = realm.where(History.class).max("id");
+                if(maxid != null){
+                    historyId = maxid.longValue();
+                }
                 History history = realm.where(History.class).equalTo("id", historyId).findFirst();
                 visitorJsonString = history.getVisitor();
             }
         });
-        */
 
-        // FIXME: 2017/10/27 データベースから getVisitor で visotorJsonString に値を代入するように修正
-        visitorJsonString = "{\"snap\": 21, \"pass_phrase\": \"86763e164ea5275546f6d5a21f03f03f\", \"user\": \"testuser\", \"date\": \"2017-10-27T08:28:02\", \"place\": 2, \"id\": 26}";
 
         try {
             URL url = new URL(urlSt);

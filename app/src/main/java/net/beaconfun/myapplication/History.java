@@ -16,6 +16,7 @@ public class History extends RealmObject {
     private String visitor;
     private String location;
     private byte[] thumbnail;
+    private String imageURL;
 
     public long getId() {
         return id;
@@ -55,5 +56,13 @@ public class History extends RealmObject {
 
     public void setVisitor(String visitor) {
         this.visitor = visitor;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 }

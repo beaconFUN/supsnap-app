@@ -8,8 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import java.util.Date;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
+
 import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
@@ -39,14 +42,14 @@ public class SupSnapActivity extends AppCompatActivity {
     long historyId = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) { // FIXME: 2017/10/20 作成したhistoryのデータを受け取る
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sup_snap);
 
         Intent intent = getIntent();
-        String uuid = intent.getStringExtra("uuid"); //// FIXME: 2017/10/20
-        String major = intent.getStringExtra("major"); //// FIXME: 2017/10/20
-        String minor = intent.getStringExtra("minor"); //// FIXME: 2017/10/20
+        String uuid = intent.getStringExtra("uuid");
+        String major = intent.getStringExtra("major");
+        String minor = intent.getStringExtra("minor");
         Log.d("UUID", uuid); // 1
         Log.d("major", major); // 2
         Log.d("minor", minor); // 3
@@ -79,7 +82,7 @@ public class SupSnapActivity extends AppCompatActivity {
     }
 
     private void getImageURL() {
-        String url = "http://35.200.2.51:5000/get_visiter";
+        String url = "http://35.200.63.65:5000/get_visiter";
         String json = "{\"user\": \"testuser\", \"beacon\": {\"minor\": 2, \"uuid\": \"4F215AA1-3904-47D5-AD5A-3B6AA89542AE\", \"major\": 1, \"id\": 2}}";
 
         JSONObject jsonObject = null;
@@ -124,8 +127,12 @@ public class SupSnapActivity extends AppCompatActivity {
     }
 
     private void getVisitor() {
-        String url = "http://35.200.2.51:5000/get_visiter";
-        String json = "{\"user\": \"testuser\", \"beacon\": {\"minor\": 2, \"uuid\": \"4F215AA1-3904-47D5-AD5A-3B6AA89542AE\", \"major\": 1, \"id\": 2}}";
+        String url = "http://35.200.63.65:5000/get_visiter";
+        Random rnd = new Random();
+        int ran = rnd.nextInt(10000000);
+        Log.d("RANDOM", "" + ran);
+        String json = "{\"user\": \"" + ran + "\", \"beacon\": {\"minor\": 2, \"uuid\": \"4F215AA1-3904-47D5-AD5A-3B6AA89542AE\", \"major\": 1, \"id\": 2}}";
+
 
         JSONObject jsonObject = null;
         try {
@@ -148,13 +155,12 @@ public class SupSnapActivity extends AppCompatActivity {
                                 public void execute(Realm realm) {
                                     History history = realm.where(History.class).equalTo("id", historyId).findFirst();
                                     Log.d("Visitor", response.toString());
-                                    // history.setVisitor(response.toString());
-                                    history.setVisitor("{\"snap\": 21, \"pass_phrase\": \"86763e164ea5275546f6d5a21f03f03f\", \"user\": \"testuser\", \"date\": \"2017-10-27T08:28:02\", \"place\": 2, \"id\": 26}");
+                                    history.setVisitor(response.toString());
                                 }
                             });
 
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.d("JSON EXCEPTION", "EXCEPTION");
                         }
 
                         getImageURL();
@@ -172,13 +178,12 @@ public class SupSnapActivity extends AppCompatActivity {
     }
 
     private void getLocation() {
-        String url = "http://35.200.2.51:5000/get_place";
+        String url = "http://35.200.63.65:5000/get_place";
         String json = "{\"minor\": 2, \"uuid\": \"4F215AA1-3904-47D5-AD5A-3B6AA89542AE\", \"major\": 1, \"id\": 2}";
 
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(json);
-            System.out.println(jsonObject.getString("screen_name"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -224,14 +229,13 @@ public class SupSnapActivity extends AppCompatActivity {
         myTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                // FIXME: 2017/10/11 撮影が
                 myHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         TextView countView = (TextView)findViewById(R.id.countView);
                         int n = Integer.valueOf(countView.getText().toString());
                         if (n - 1 == 0) {
-                            task.execute();  // FIXME: 2017/10/27 historyIdを渡す　
+                            task.execute();
                             countView.setText("0");
                             // サムネイルを保存
                             finish();
