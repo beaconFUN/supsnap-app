@@ -105,6 +105,7 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
         startActivity(intent);
     }
 
+
     private void createMockData() {
         myRealm.executeTransaction(new Realm.Transaction() {
             @Override

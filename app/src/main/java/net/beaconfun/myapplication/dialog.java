@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -12,16 +13,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.google.zxing.qrcode.encoder.ByteMatrix;
+import com.google.zxing.qrcode.encoder.Encoder;
+import com.google.zxing.qrcode.encoder.QRCode;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.realm.Realm;
+
 
 
 /**
@@ -39,11 +50,11 @@ public class dialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View layout = inflater.inflate(R.layout.thum_dialog,null);
+        View layout = inflater.inflate(R.layout.thum_dialog, null);
         ImageView imageView = layout.findViewById(R.id.modalThum);
 
         int positionInt = getArguments().getInt("position") + 1;
-        Log.d("position" ,"ダイアログが受け取った" + positionInt);
+        Log.d("position", "ダイアログが受け取った" + positionInt);
         historyId = positionInt;
 
         realm = Realm.getDefaultInstance();
@@ -57,7 +68,7 @@ public class dialog extends DialogFragment {
         });
 
         if (thum != null) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(thum , 0, thum.length);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(thum, 0, thum.length);
             Bitmap bitmap2 = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() * 10, bitmap.getHeight() * 10, false);
             imageView.setImageBitmap(bitmap2);
         } else {
@@ -65,7 +76,67 @@ public class dialog extends DialogFragment {
         }
         builder.setView(layout);
 
+
+            Bitmap qrCodeBitmap = this.createQRCode("http://google.co.jp");
+            Bitmap qrcode = Bitmap.createScaledBitmap(qrCodeBitmap, qrCodeBitmap.getWidth() * 5, qrCodeBitmap.getHeight() * 5, false);
+            imageView.setImageBitmap(qrcode);
+
+
         return builder.create();
+    }
+     private Bitmap createQRCode(String contents) {
+        Bitmap qrBitmap = null;
+        try {
+            // QRコードの生成
+            QRCodeWriter qrcodewriter = new QRCodeWriter();
+            BitMatrix qrBitMatrix = qrcodewriter.encode(contents,
+                    BarcodeFormat.QR_CODE,
+                    300,
+                    300);
+
+            qrBitmap = Bitmap.createBitmap(300, 300, Bitmap.Config.ARGB_8888);
+            qrBitmap.setPixels(this.createDot(qrBitMatrix), 0, 300, 0, 0, 300, 300);
+        }
+        catch(Exception ex)
+        {
+            // エンコード失敗
+            Log.d("qrcode","failed");
+        }
+        finally
+        {
+            return qrBitmap;
+        }
+    }
+
+    // ドット単位の判定
+    private int[] createDot(BitMatrix qrBitMatrix)
+    {
+        // 縦幅・横幅の取得
+        int width = qrBitMatrix.getWidth();
+        int height = qrBitMatrix.getHeight();
+        // 枠の生成
+        int[] pixels = new int[width * height];
+
+        // データが存在するところを黒にする
+        for (int y = 0; y < height; y++)
+        {
+            // ループ回数盤目のOffsetの取得
+            int offset = y * width;
+            for (int x = 0; x < width; x++)
+            {
+                // データが存在する場合
+                if (qrBitMatrix.get(x, y))
+                {
+                    pixels[offset + x] = Color.BLACK;
+                }
+                else
+                {
+                    pixels[offset + x] = Color.WHITE;
+                }
+            }
+        }
+        // 結果を返す
+        return pixels;
     }
 
     private void getImage() {
