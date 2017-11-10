@@ -35,6 +35,7 @@ import org.json.JSONObject;
 import java.util.Collection;
 import java.io.ByteArrayOutputStream;
 import java.util.Date;
+import java.util.LinkedList;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -47,6 +48,26 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
     private HistoryAdapter adapter;
     BeaconManager mBeaconManager;
     Region region;
+
+    class ID {
+        public String major;
+        public String minor;
+        public ID(String major, String minor){
+            this.major = major;
+            this.minor = minor;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            ID other = (ID)obj;
+            return other.major.equals(this.major) && other.minor.equals(this.minor);
+        }
+    }
+    LinkedList<ID> idList = new LinkedList<ID>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +93,11 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DialogFragment dialog = new dialog();
-                Bundle args =new Bundle();
-                args.putInt("position",position); // TODO: 2017/10/27 画像データをうけわたす
+                Bundle args = new Bundle();
+                args.putInt("position", position); // TODO: 2017/10/27 画像データをうけわたす
                 dialog.setArguments(args);
-                dialog.show(getFragmentManager(),"dialog_basic");
-                Log.d("position","ビューは「" + position + "」");
+                dialog.show(getFragmentManager(), "dialog_basic");
+                Log.d("position", "ビューは「" + position + "」");
             }
         });
 
@@ -97,8 +118,14 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
         mBeaconManager.unbind(this);
     }
 
-    private void enterBeaconRange(String uuid, String major, String minor) {
+    private void enterBeaconRange(String uuid, String major, final String minor) {
         Intent intent = new Intent(getApplicationContext(), SupSnapActivity.class);
+        for(ID id: idList) {
+            if (id.equals(new ID(major, minor))) {
+                return;
+            }
+        }
+        idList.add(new ID(major, minor));
         intent.putExtra("uuid", uuid);
         intent.putExtra("major", major);
         intent.putExtra("minor", minor);
@@ -131,37 +158,8 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
 
     public void onTapped(View view) {
 
-        enterBeaconRange("", "", "");
-        /*
-        String url = "http://35.200.63.65:5000/models/Visiter";
+        enterBeaconRange("", "1", "2");
 
-        JsonObjectRequest jsObjRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                url,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Log.d(TAG, response.toString(2));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, error.toString());
-                    }
-                }
-        );
-        Mysingleton.getInstance(getApplicationContext()).addToRequestQueue(jsObjRequest);
-
-        Intent intent = new Intent(this, SupSnapActivity.class);
-        startActivity(intent);
-        */
 
     }
 
@@ -173,28 +171,56 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
 
     @Override
     public void onBeaconServiceConnect() {
+        Identifier uuid = Identifier.parse(BEACON_UUID);
+        final Region mRegion = new Region("ibeacon", uuid, null, null);
+
+        mBeaconManager.addRangeNotifier(new RangeNotifier() {
+            @Override
+            public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region) {
+                for (Beacon beacon : collection) {
+                    Log.d("ID1", beacon.getId1().toString());
+                    Log.d("ID2", beacon.getId2().toString());
+                    final String major = beacon.getId2().toString();
+                    final String minor = beacon.getId3().toString();
+
+                    Log.d("ID3", beacon.getId3().toString());
+                    enterBeaconRange(beacon.getId1().toString(), beacon.getId2().toString(), beacon.getId3().toString());
+                }
+
+                Log.i(TAG, "ビーコンを検出");
+            }
+        });
+
         mBeaconManager.addMonitorNotifier(new MonitorNotifier() {
             @Override
             public void didEnterRegion(Region region) {
-                enterBeaconRange("1", "2", "3"); // FIXME: 2017/11/01 ビーコンから得た実際のデータを渡す
-                Log.i(TAG, "ビーコンを検出");
-            }
+                Log.i(TAG, "ビーコンが検出範囲内へ");
+                //レンジングの開始
+                try {
+                    mBeaconManager.startRangingBeaconsInRegion(mRegion);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
 
+            }
 
             @Override
             public void didExitRegion(Region region) {
                 Log.i(TAG, "ビーコンが検出範囲外へ");
+                try {
+                    mBeaconManager.stopRangingBeaconsInRegion(mRegion);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void didDetermineStateForRegion(int state, Region region) {
-                Log.i(TAG, "I have just switched from seeing/not seeing beacons: "+state);
+                Log.i(TAG, "I have just switched from seeing/not seeing beacons: " + state);
             }
         });
-
         try {
-            region = new Region(BEACON_UUID, null, null, null);
-            mBeaconManager.startMonitoringBeaconsInRegion(region);
+            mBeaconManager.startMonitoringBeaconsInRegion(mRegion);
         } catch (RemoteException e) {
             Log.e(TAG, e.toString());
         }

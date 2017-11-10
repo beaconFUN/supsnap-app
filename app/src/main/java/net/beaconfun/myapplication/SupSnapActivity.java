@@ -31,15 +31,19 @@ import io.realm.Realm;
 
 public class SupSnapActivity extends AppCompatActivity {
 
-    private final int COUNT_TIME = 8;
+    private final int COUNT_TIME = 25;
 
 
     Handler myHandler = new Handler();
     Timer myTimer = new Timer();
+    Timer imageTimer = new Timer();
     Realm realm;
     private HistoryAdapter adapter2;
     AsyncNetwork task = new AsyncNetwork();
     long historyId = 0;
+    String uuid;
+    String major;
+    String minor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +51,9 @@ public class SupSnapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sup_snap);
 
         Intent intent = getIntent();
-        String uuid = intent.getStringExtra("uuid");
-        String major = intent.getStringExtra("major");
-        String minor = intent.getStringExtra("minor");
-        Log.d("UUID", uuid); // 1
-        Log.d("major", major); // 2
-        Log.d("minor", minor); // 3
-
+        uuid = intent.getStringExtra("uuid");
+        major = intent.getStringExtra("major");
+        minor = intent.getStringExtra("minor");
         realm = Realm.getDefaultInstance();
         
 
@@ -82,8 +82,8 @@ public class SupSnapActivity extends AppCompatActivity {
     }
 
     private void getImageURL() {
-        String url = "http://35.200.63.65:5000/get_visiter";
-        String json = "{\"user\": \"testuser\", \"beacon\": {\"minor\": 2, \"uuid\": \"4F215AA1-3904-47D5-AD5A-3B6AA89542AE\", \"major\": 1, \"id\": 2}}";
+        String url = "http://35.200.2.51:5000/get_visiter";
+        String json = "{\"user\": \"testuser\", \"beacon\": {\"minor\": " + minor + ", \"uuid\": \"4F215AA1-3904-47D5-AD5A-3B6AA89542AE\", \"major\": " + major + ", \"id\": 2}}";
 
         JSONObject jsonObject = null;
         try {
@@ -127,11 +127,11 @@ public class SupSnapActivity extends AppCompatActivity {
     }
 
     private void getVisitor() {
-        String url = "http://35.200.63.65:5000/get_visiter";
+        String url = "http://35.200.2.51:5000/get_visiter";
         Random rnd = new Random();
         int ran = rnd.nextInt(10000000);
         Log.d("RANDOM", "" + ran);
-        String json = "{\"user\": \"" + ran + "\", \"beacon\": {\"minor\": 2, \"uuid\": \"4F215AA1-3904-47D5-AD5A-3B6AA89542AE\", \"major\": 1, \"id\": 2}}";
+        String json = "{\"beacon\": {\"minor\": 2, \"uuid\": \"4F215AA1-3904-47D5-AD5A-3B6AA89542AE\", \"major\": 1}, \"user\": \"testuser" + ran + "\"}";
 
 
         JSONObject jsonObject = null;
@@ -159,6 +159,14 @@ public class SupSnapActivity extends AppCompatActivity {
                                 }
                             });
 
+                            imageTimer.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    ImageUpdater updater = new ImageUpdater((ImageView) findViewById(R.id.streamImage));
+                                    updater.execute(response.toString());
+                                }
+                            }, 0, 100);
+
                         } catch (JSONException e) {
                             Log.d("JSON EXCEPTION", "EXCEPTION");
                         }
@@ -178,7 +186,7 @@ public class SupSnapActivity extends AppCompatActivity {
     }
 
     private void getLocation() {
-        String url = "http://35.200.63.65:5000/get_place";
+        String url = "http://35.200.2.51:5000/get_place";
         String json = "{\"minor\": 2, \"uuid\": \"4F215AA1-3904-47D5-AD5A-3B6AA89542AE\", \"major\": 1, \"id\": 2}";
 
         JSONObject jsonObject = null;
@@ -246,11 +254,19 @@ public class SupSnapActivity extends AppCompatActivity {
                 });
             }
         }, 0, 1000);
+
+        Log.d("imageTimer", "start");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         myTimer.cancel();
+        imageTimer.cancel();
     }
 }
