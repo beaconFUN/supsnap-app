@@ -25,10 +25,11 @@
             android:weightSum="1">
 
             <ImageButton
-                android:id="@+id/button11"
+                android:id="@+id/qr_button"
                 android:layout_width="70dp"
                 android:layout_height="50dp"
                 android:background="#4169E1"
+                android:onClick="onTapped"
                 android:scaleType="fitStart"
                 android:src="@drawable/qr" />
 
