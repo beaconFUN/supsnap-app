@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="TextView"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/holo_blue_dark"
         android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"
