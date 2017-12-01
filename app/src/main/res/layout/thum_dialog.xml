@@ -44,14 +44,14 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/download_button_button"
+            android:id="@+id/download_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:weightSum="1">
 
             <ImageButton
-                android:id="@+id/button12"
+                android:id="@+id/download_button"
                 android:layout_width="70dp"
                 android:layout_height="50dp"
                 android:background="#4169E1"

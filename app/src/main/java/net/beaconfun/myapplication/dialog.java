@@ -3,21 +3,22 @@ package net.beaconfun.myapplication;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -25,7 +26,21 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import io.realm.Realm;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import static net.beaconfun.myapplication.R.drawable.download;
 
 
 /**
@@ -47,6 +62,7 @@ public class dialog extends DialogFragment{
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View layout = inflater.inflate(R.layout.thum_dialog,null);
         imageView = layout.findViewById(R.id.modalThum);
+
 
 
 
@@ -81,11 +97,20 @@ public class dialog extends DialogFragment{
             }
         });
 
+        layout.findViewById(R.id.download_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    getimage();
+                }
+            }
+        });
+
         return builder.create();
     }
 
     private void onTapped(View v) {
-        Bitmap qrCodeBitmap = this.createQRCode("http://35.200.2.51:5000/get_image?visiter="+visitorjson);
+        Bitmap qrCodeBitmap = this.createQRCode("http://35.202.128.133:5000/get_image?visiter="+visitorjson);
         Bitmap qrcode = Bitmap.createScaledBitmap(qrCodeBitmap, qrCodeBitmap.getWidth() * 5, qrCodeBitmap.getHeight() * 5, false);
         imageView.setImageResource(0);
         imageView.setImageBitmap(qrcode);
@@ -144,19 +169,32 @@ public class dialog extends DialogFragment{
         return pixels;
     }
 
-    private void getImage() {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                History history = realm.where(History.class).equalTo("id", historyId).findFirst();
-                // TODO: 2017/10/27 画像ダウンロード機能を実装する
-            }
-        });
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void getimage(){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url("http://35.202.128.133:5000/get_image?visiter="+visitorjson).build();
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        InputStream inputStream = response.body().byteStream();
+        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, "Hey view/download this image");
+        String path = MediaStore.Images.Media.insertImage(this.getContext().getContentResolver(), bitmap, "", null);
+        Uri screenshotUri = Uri.parse(path);
+
+        intent.putExtra(Intent.EXTRA_STREAM, screenshotUri);
+        intent.setType("image/*");
+        startActivity(Intent.createChooser(intent, "Share image via..."));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void getLocation() {
-        String url = "http://35.200.2.51:5000/get_image";
+        String url = "http://35.202.128.133:5000/get_image";
 
         JSONObject jsonObject = null;
 
@@ -175,6 +213,7 @@ public class dialog extends DialogFragment{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        /*
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -210,6 +249,7 @@ public class dialog extends DialogFragment{
         );
 
         Mysingleton.getInstance(this.getContext()).addToRequestQueue(jsObjRequest);
+        */
     }
 
 }
