@@ -83,8 +83,7 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
 
         myRealm = Realm.getDefaultInstance();
 
-
-        createMockData();
+        
 
         RealmResults<History> histories = myRealm.where(History.class).findAll();
         adapter = new HistoryAdapter(histories);
@@ -133,29 +132,7 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
         startActivity(intent);
     }
 
-    private void createMockData() {
-        myRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
 
-                Resources res = getResources();
-                Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.qr);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                byte[] bytes = stream.toByteArray();
-
-                History history = realm.createObject(History.class, 1);
-                history.setLocation("未来大");
-                history.setCreatedAt(new Date());
-                history.setThumbnail(bytes);
-
-                History history2 = realm.createObject(History.class, 2);
-                history2.setLocation("函館山");
-                history2.setCreatedAt(new Date());
-                history2.setThumbnail(bytes);
-            }
-        });
-    }
 
     public void onTapped(View view) {
 
