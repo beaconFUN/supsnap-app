@@ -156,7 +156,7 @@ public class dialog extends DialogFragment{
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void getLocation() {
-        String url = "http://35.200.2.51:5000/get_image";
+        String url = "http://35.202.128.133:5000/get_image";
 
         JSONObject jsonObject = null;
 
