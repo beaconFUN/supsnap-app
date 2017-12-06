@@ -1,8 +1,10 @@
 package net.beaconfun.myapplication;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +47,13 @@ class HistoryAdapter extends RealmBaseAdapter<History> implements ListAdapter{
         History history = adapterData.get(position);
         byte[] b = history.getThumbnail();
         if (b != null) {
+            DisplayMetrics dm = Resources.getSystem().getDisplayMetrics();
+            int realWid = dm.widthPixels;
             Bitmap bitmap = BitmapFactory.decodeByteArray(b , 0, b .length);
-            Bitmap bitmap2 = Bitmap.createScaledBitmap(bitmap, 500, 400, false);
+            float rate = realWid / bitmap.getWidth();
+            int wi = (int) (bitmap.getWidth() * rate);
+            int he = (int) (bitmap.getHeight() * rate);
+            Bitmap bitmap2 = Bitmap.createScaledBitmap(bitmap, wi, he, false);
             viewHolder.thumImage.setImageBitmap(bitmap2);
         } else {
             viewHolder.thumImage.setImageResource(R.drawable.p350x150);
