@@ -33,7 +33,7 @@ public class AsyncNetwork extends AsyncTask<String,Integer,Bitmap> {
 
     @Override
     protected Bitmap doInBackground(String... strings) {
-        final String urlSt = "http://35.202.128.133:5000/get_thum";
+        final String urlSt = "http://35.200.2.51:5000/get_thum";
         realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -54,7 +54,7 @@ public class AsyncNetwork extends AsyncTask<String,Integer,Bitmap> {
             RequestBody requestBody = RequestBody.create (MIMEType, visitorJsonString);
             Request request = null;
             try {
-                request = new Request.Builder().url(new URL("http://35.202.128.133:5000/get_snap_state")).post(requestBody).build();
+                request = new Request.Builder().url(new URL("http://35.200.2.51:5000/get_snap_state")).post(requestBody).build();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

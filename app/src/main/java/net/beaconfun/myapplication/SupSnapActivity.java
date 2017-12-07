@@ -83,7 +83,7 @@ public class SupSnapActivity extends AppCompatActivity {
     }
 
     private void getImageURL() {
-        String url = "http://35.202.128.133:5000/get_visiter";
+        String url = "http://35.200.2.51:5000/get_visiter";
         String json = "{\"user\": \"testuser\", \"beacon\": {\"minor\": " + minor + ", \"uuid\": \"4F215AA1-3904-47D5-AD5A-3B6AA89542AE\", \"major\": " + major + ", \"id\": 2}}";
 
         JSONObject jsonObject = null;
@@ -128,7 +128,7 @@ public class SupSnapActivity extends AppCompatActivity {
     }
 
     private void getVisitor() {
-        String url = "http://35.202.128.133:5000/get_visiter";
+        String url = "http://35.200.2.51:5000/get_visiter";
         Random rnd = new Random();
         int ran = rnd.nextInt(10000000);
         Log.d("RANDOM", "" + ran);
@@ -187,7 +187,7 @@ public class SupSnapActivity extends AppCompatActivity {
     }
 
     private void getLocation() {
-        String url = "http://35.202.128.133:5000/get_place";
+        String url = "http://35.200.2.51:5000/get_place";
         String json = "{\"minor\": 2, \"uuid\": \"4F215AA1-3904-47D5-AD5A-3B6AA89542AE\", \"major\": 1, \"id\": 2}";
 
         JSONObject jsonObject = null;

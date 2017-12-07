@@ -24,7 +24,7 @@ public class ImageUpdater extends AsyncTask<String, Integer, Bitmap> {
     private ImageView targetImageView;
     private String json;
 
-    public final String API_URL = "http://35.202.128.133:5000/get_live_view";
+    public final String API_URL = "http://35.200.2.51:5000/get_live_view";
 
     public ImageUpdater(ImageView v) {
         targetImageView = v;
