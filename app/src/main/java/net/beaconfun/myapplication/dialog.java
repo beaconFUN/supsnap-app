@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 
 /**
@@ -50,7 +51,7 @@ public class dialog extends DialogFragment{
 
 
 
-        int positionInt = getArguments().getInt("position") + 1;
+        int positionInt = getArguments().getInt("position");
         Log.d("position" ,"ダイアログが受け取った" + positionInt);
         historyId = positionInt;
 
@@ -59,6 +60,7 @@ public class dialog extends DialogFragment{
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
+                RealmResults<History> results = realm.where(History.class).findAll();
                 History history = realm.where(History.class).equalTo("id", historyId).findFirst();
                 thum = history.getThumbnail();
                 visitorjson = history.getVisitor();
