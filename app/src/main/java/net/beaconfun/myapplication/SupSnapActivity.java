@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ import java.util.UUID;
 
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -62,6 +65,16 @@ public class SupSnapActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sup_snap);
+
+        if (Build.VERSION.SDK_INT >= 19) {
+            getSupportActionBar().hide();
+            Window window = getWindow();
+            View view = window.getDecorView();
+            view.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                            View.SYSTEM_UI_FLAG_FULLSCREEN);
+        }
+
 
         Intent intent = getIntent();
         uuid = intent.getStringExtra("uuid");

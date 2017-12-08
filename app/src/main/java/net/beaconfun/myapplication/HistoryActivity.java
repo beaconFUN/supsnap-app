@@ -73,6 +73,8 @@ public class HistoryActivity extends AppCompatActivity implements BeaconConsumer
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         setContentView(R.layout.activity_history);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
